@@ -5,6 +5,6 @@ def listify(obj):
 
 
 def dictify(obj, key):
-    if isinstance(obj, dict):
-        return obj
-    return {key: obj}
+    if not isinstance(obj, dict):
+        return {key: obj}
+    return obj
