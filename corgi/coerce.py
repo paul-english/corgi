@@ -1,10 +1,10 @@
 def listify(obj):
-    if not isinstance(obj, list):
-        return [obj]
-    return obj
+    if isinstance(obj, list) or isinstance(obj, tuple):
+        return obj
+    return [obj]
 
 
 def dictify(obj, key):
-    if not isinstance(obj, dict):
-        return {key: obj}
-    return obj
+    if isinstance(obj, dict):
+        return obj
+    return {key: obj}
