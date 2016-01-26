@@ -51,3 +51,18 @@ def compose2(f, g):
 
 def compose(*fs):
     return reduce(compose2, fs)
+
+
+class thunk(object):
+    """Printable thunk object for ensuring things are callable"""
+
+    def __init__(self, x):
+        self.x = x
+
+    def __repr__(self):
+        return "<thunk %s>" % self.x
+
+    def __call__(self, *args, **kwargs):
+        if hasattr(self.x, '__call__'):
+            return self.x(*args, **kwargs)
+        return self.x
