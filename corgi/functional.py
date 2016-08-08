@@ -4,8 +4,9 @@ import functools
 
 def pipe(*functions):
     def closure(x):
+        out = None
         for fn in functions:
-            if not out:
+            if out is None:
                 out = fn(x)
             else:
                 out = fn(out)
