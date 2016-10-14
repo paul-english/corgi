@@ -16,5 +16,6 @@ setup(name='corgi',
           'numpy',
           'six',
           'sqlalchemy',
+          'tqdm',
       ],
       )
