@@ -32,3 +32,9 @@ def sigfig_round(x, n, ignore_left_of_decimal=False, eps=1e-7):
         int_parts = np.floor(decimal_exponents)
         mantissas *= 10.0**(decimal_exponents - int_parts)
         return np.around(mantissas.values, decimals=n - 1) * 10.0**int_parts
+
+def invboxcox(y, lbda):
+    if lbda == 0:
+        return np.exp(y)
+    else:
+        return np.exp(np.log(lbda*y+1)/lbda)

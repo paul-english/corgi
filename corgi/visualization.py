@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import division, print_function
 
 import numpy as np
 
@@ -9,4 +9,4 @@ def hist(data, width=20):
 
     for (count, value) in zip(counts, values):
         scaled = int(round((count / max_count) * width))
-        print('%5.2f' % value, ':', 'X'*scaled)
+        print('%5.2f (%5d):' % (value, count), 'X'*scaled)
