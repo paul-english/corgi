@@ -3,7 +3,8 @@ import numpy as np
 import pandas as pd
 from scipy.stats import kendalltau, spearmanr
 from sklearn.metrics import (accuracy_score, f1_score, log_loss,
-                             mean_squared_error, precision_score, recall_score)
+                             mean_absolute_error, mean_squared_error,
+                             precision_score, recall_score)
 from sklearn.model_selection import StratifiedKFold
 from tqdm import tqdm
 
@@ -18,6 +19,7 @@ classifier_scoring = {
 
 regression_scoring = {
     'mean_squared_error': mean_squared_error,
+    'mean_absolute_error': mean_absolute_error,
     'kendalltau': lambda x, y: kendalltau(x, y).correlation,
     'spearmanr': lambda x, y: spearmanr(x, y)[0],
 }
