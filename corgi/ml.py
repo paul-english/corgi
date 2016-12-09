@@ -48,7 +48,8 @@ def cross_val_scores(clf, X, y, cv=3, scoring=None):
         for k, metric in scoring.items():
             try:
                 score[k] = metric(y[test], y_pred)
-            except:
+            except Exception as e:
+                print('Warning: Exception trying to score', k, e)
                 pass
         scores.append(score)
 
