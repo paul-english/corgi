@@ -9,6 +9,28 @@ from sklearn.model_selection import StratifiedKFold
 from tqdm import tqdm
 
 
+def discounted_cumulative_gain(y, y_pred, k=None):
+    if k is None:
+        k = y.shape[0]
+    order = np.argsort(y_pred)[::-1]
+    y = np.take(y, order[:k])
+    return (y / np.log2(np.arange(y.shape[0]) + 2)).sum()
+
+def exponential_discounted_cumulative_gain(y, y_pred, k=None):
+    if k is None:
+        k = y.shape[0]
+    order = np.argsort(y_pred)[::-1]
+    y = np.take(y, order[:k])
+    return ((2**y - 1) / np.log2(np.arange(y.shape[0]) + 2)).sum()
+
+def normalized_discounted_cumulative_gain(y, y_pred, k=None):
+    return discounted_cumulative_gain(y, y_pred, k) / discounted_cumulative_gain(y, y, k)
+
+def exponential_normalized_discounted_cumulative_gain(y, y_pred, k=None):
+    return exponential_discounted_cumulative_gain(y, y_pred, k) \
+        / exponential_discounted_cumulative_gain(y, y, k)
+
+
 classifier_scoring = {
     'accuracy': accuracy_score,
     'log_loss': log_loss,
@@ -22,6 +44,13 @@ regression_scoring = {
     'mean_absolute_error': mean_absolute_error,
     'kendalltau': lambda x, y: kendalltau(x, y).correlation,
     'spearmanr': lambda x, y: spearmanr(x, y)[0],
+}
+
+rank_scoring = {
+    'kendalltau': lambda x, y: kendalltau(x, y).correlation,
+    'spearmanr': lambda x, y: spearmanr(x, y)[0],
+    'ndcg': normalized_discounted_cumulative_gain,
+    'endcg': exponential_normalized_discounted_cumulative_gain,
 }
 
 def scores(y, y_pred, scoring=None):
