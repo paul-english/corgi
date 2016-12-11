@@ -49,8 +49,8 @@ regression_scoring = {
 rank_scoring = {
     'kendalltau': lambda x, y: kendalltau(x, y).correlation,
     'spearmanr': lambda x, y: spearmanr(x, y)[0],
-    'ndcg': normalized_discounted_cumulative_gain,
-    'endcg': exponential_normalized_discounted_cumulative_gain,
+    'ndcg': lambda x, y: normalized_discounted_cumulative_gain(x, y, k=10),
+    'endcg': lambda x, y: exponential_normalized_discounted_cumulative_gain(x, y, k=10),
 }
 
 def scores(y, y_pred, scoring=None):
