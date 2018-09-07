@@ -1,16 +1,36 @@
-from six.moves import configparser as CP
-from sqlalchemy.engine.url import URL
-from sqlalchemy.engine import create_engine
 import os
-import pandas as pd
+from pathlib import Path
 
-def get_odbc_engine(name, odbc_filename='/etc/odbc.ini', database=None):
+from six.moves import configparser as CP
+
+import pandas as pd
+from sqlalchemy.engine import create_engine
+from sqlalchemy.engine.url import URL
+
+home = str(Path.home())
+
+def get_odbc_engine(name, odbc_filename=None, database=None):
     """
     Looks up the connection details in an odbc file and returns a SQLAlchemy engine initialized with those details.
     """
+    possible_locations = []
+    if odbc_filename:
+        possible_locations += [odbc_filename]
+    possible_locations += [
+        '/etc/odbc.ini',
+        '%s/odbc.ini' % home,
+    ]
+
+    odbc_loc = None
+    for loc in possible_locations:
+        if os.path.exists(loc):
+            odbc_loc = loc
+            break
+    if not odbc_loc:
+        raise Exception('Could not find an odbc config file. Checked: \n%s' % "\n".join(possible_locations))
 
     parser = CP.ConfigParser()
-    parser.read(odbc_filename)
+    parser.read(odbc_loc)
 
     cfg_dict = dict(parser.items(name))
 
