@@ -11,7 +11,7 @@ setup(name='corgi',
       author='Paul English',
       author_email='paulnglsh@gmail.com',
       url='https://github.com/log0ymxm/corgi',
-      packages=['corgi'],
+      packages=['corgi', 'corgi.keras'],
       install_requires=[
           'numpy',
           'six',
